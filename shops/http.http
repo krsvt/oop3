@@ -1,0 +1,96 @@
+### получить все магазины
+GET http://localhost:8080/api/shop
+
+### создать магазин
+
+POST http://localhost:8080/api/shop
+accept: application/json
+content-type: application/json
+
+{
+  "title": "Pyatiorochka",
+  "address": "Saint-Petersburg, st. Parfenovskaya, 1"
+}
+
+### получить все продукты
+
+GET http://localhost:8080/api/product
+accept: application/json
+content-type: application/json
+
+### добавить продукт в базу
+
+POST http://localhost:8080/api/product
+accept: application/json
+content-type: application/json
+
+{
+  "title": "Watermelon",
+  "price": 100.5
+}
+
+### найти наименьшую цену продукта среди магазинов
+
+GET http://localhost:8080/api/product/1/lower-price
+accept: application/json
+content-type: application/json
+
+### добавить продукты в магазин
+
+POST http://localhost:8080/api/shop/1/add-products
+accept: application/json
+content-type: application/json
+
+[
+  {
+    "id": 1,
+    "amount": 2,
+    "price": 100
+  },
+  {
+    "id": 2,
+    "amount": 3,
+    "price": 200
+  }
+]
+
+### Понять, какие товары можно купить в магазине на некоторую сумму
+POST http://localhost:8080/api/shop/1/possible-products
+accept: application/json
+content-type: application/json
+
+{
+  "money": 100.5
+}
+
+### Купить партию товаров в магазине
+POST http://localhost:8080/api/shop/1/buy
+accept: application/json
+content-type: application/json
+
+[
+  {
+    "id": 1,
+    "amount": 1
+  },
+  {
+    "id": 2,
+    "amount": 1
+  }
+]
+
+### Найти, в каком магазине партия товаров имеет меньшую цену
+POST http://localhost:8080/api/shop/1/lower-price
+accept: application/json
+content-type: application/json
+
+[
+  {
+    "id": 1,
+    "amount": 1
+  },
+  {
+    "id": 2,
+    "amount": 1
+  }
+]

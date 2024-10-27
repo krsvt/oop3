@@ -1,7 +1,7 @@
-using shops.Entities;
+using Shops.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace shops.Storage.Database;
+namespace Shops.Storage.Database;
 
 public class MyDbContext : DbContext
 {
@@ -10,7 +10,7 @@ public class MyDbContext : DbContext
   {
   }
 
-  public DbSet<Product> Songs { get; set; } = null!;
+  public DbSet<Product> Products { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

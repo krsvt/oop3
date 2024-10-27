@@ -1,20 +1,20 @@
-using shops.Entities;
+using Shops.Entities;
 
-namespace shops.Storage.Files;
+namespace Shops.Storage.Files;
 
 public class FilesProductStorage : IProductStorage
 {
-    Product IProductStorage.AddProduct(Product p)
+    Task<Product> IProductStorage.AddProduct(Product p)
     {
         throw new NotImplementedException();
     }
 
-    Product IProductStorage.GetAllProducts()
+    Task<List<Product>> IProductStorage.GetAllProducts()
     {
         throw new NotImplementedException();
     }
 
-    Product IProductStorage.GetProduct(int id)
+    Task<Product> IProductStorage.GetProduct(int id)
     {
         throw new NotImplementedException();
     }

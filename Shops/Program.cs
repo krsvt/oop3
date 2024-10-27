@@ -1,5 +1,6 @@
-using shops.Configuration;
-using shops.Storage;
+using Shops.Configuration;
+using Shops.Services;
+using Shops.Storage;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +10,8 @@ builder.Services.AddSwaggerGen();
 
 StorageConfiguration.SetStorage(builder.Configuration,
         builder.Services);
+
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
 
@@ -20,10 +23,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// var summaries = new[]
-// {
-//     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-// };
+var product = app.MapGroup("/api/product");
+
+product.MapGet("/",
+        async (
+            IStorage st, ProductService s) =>
+        {
+            var pr = await s.GetAllProductsAsync();
+            return Results.Ok(pr);
+        });
+
 
 // app.MapGet("/weatherforecast", () =>
 // {
@@ -40,8 +49,6 @@ app.UseHttpsRedirection();
 // .WithName("GetWeatherForecast")
 // .WithOpenApi();
 
-// TODO make sure storage is file and pg
-Console.WriteLine("storage is " + st );
 
 app.Run();
 

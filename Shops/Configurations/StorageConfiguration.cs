@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using shops.Storage;
-using shops.Storage.Database;
-using shops.Storage.Files;
+using Shops.Storage;
+using Shops.Storage.Database;
+using Shops.Storage.Files;
 
-namespace shops.Configuration;
+namespace Shops.Configuration;
 
 public class StorageConfiguration
 {

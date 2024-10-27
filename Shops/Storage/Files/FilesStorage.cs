@@ -1,5 +1,5 @@
 
-namespace shops.Storage.Files;
+namespace Shops.Storage.Files;
 
 public class FilesStorage : IStorage
 {

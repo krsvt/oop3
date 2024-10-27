@@ -1,4 +1,4 @@
-namespace shops.Storage;
+namespace Shops.Storage;
 
 public interface IStorage
 {

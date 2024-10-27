@@ -1,6 +1,6 @@
-using shops.Entities;
+using Shops.Entities;
 
-namespace shops.Storage;
+namespace Shops.Storage;
 
 public interface IShopStorage
 {

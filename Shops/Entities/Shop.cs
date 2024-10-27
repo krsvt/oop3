@@ -1,4 +1,4 @@
-namespace shops.Entities;
+namespace Shops.Entities;
 
 public class Shop
 {

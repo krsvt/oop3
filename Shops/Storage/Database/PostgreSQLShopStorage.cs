@@ -1,6 +1,6 @@
-using shops.Entities;
+using Shops.Entities;
 
-namespace shops.Storage.Database;
+namespace Shops.Storage.Database;
 
 public class PostgreSQLShopStorage : IShopStorage
 {

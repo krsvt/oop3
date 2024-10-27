@@ -19,8 +19,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        app.UseSwagger();
+        app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -31,8 +31,8 @@ product.MapGet("/",
         async (
             IStorage st, ProductService p) =>
         {
-            var pr = await p.GetAllProductsAsync();
-            return Results.Ok(pr);
+                var pr = await p.GetAllProductsAsync();
+                return Results.Ok(pr);
         })
 .WithName("GetProducts")
 .WithOpenApi();
@@ -41,8 +41,8 @@ product.MapGet("/{id}",
         async (int id,
             IStorage st, ProductService p) =>
         {
-            var pr = await p.GetProductAsync(id);
-            return Results.Ok(pr);
+                var pr = await p.GetProductAsync(id);
+                return Results.Ok(pr);
         })
 .WithName("GetProductById")
 .WithOpenApi();
@@ -51,8 +51,8 @@ product.MapGet("/{id}",
 product.MapPost("/",
         async (IStorage st, ProductService p, Product product) =>
         {
-            await p.AddProductAsync(product);
-            return Results.Created($"/api/product/{product.Id}", product);
+                await p.AddProductAsync(product);
+                return Results.Created($"/api/product/{product.Id}", product);
         })
 .WithName("AddProduct");
 
@@ -63,28 +63,37 @@ var shop = app.MapGroup("/api/shop");
 shop.MapGet("/",
         async (IStorage st, ShopService s) =>
         {
-            var shops = await s.GetAllShopsAsync();
-            return Results.Ok(shops);
+                var shops = await s.GetAllShopsAsync();
+                return Results.Ok(shops);
         })
 .WithName("GetAllShops");
 
 shop.MapGet("/{id}",
         async (int id,
-            IStorage st, ShopService p) =>
+            IStorage st, ShopService s) =>
         {
-            var shop = await p.GetShopAsync(id);
-            return Results.Ok(shop);
+                var shop = await s.GetShopAsync(id);
+                return Results.Ok(shop);
         })
 .WithName("GetShopById");
 
 
 shop.MapPost("/",
-        async (IStorage st, ShopService p, Shop shop) =>
+        async (IStorage st, ShopService s, Shop shop) =>
         {
-            await p.AddShopAsync(shop);
-            return Results.Created($"/api/shop/{shop.Id}", shop);
+                await s.AddShopAsync(shop);
+                return Results.Created($"/api/shop/{shop.Id}", shop);
         })
 .WithName("AddShop");
+
+shop.MapPost("/{id}/add-products",
+        async (IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
+        {
+                await s.AddShopProductsAsync(shopProducts);
+                return Results.Ok(shop);
+        })
+.WithName("AddShop");
+
 
 shop.WithOpenApi();
 app.Run();

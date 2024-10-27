@@ -12,6 +12,7 @@ public class MyDbContext : DbContext
 
   public DbSet<Product> Products { get; set; } = null!;
   public DbSet<Shop> Shops { get; set; } = null!;
+  public DbSet<ShopProducts> ShopProducts { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

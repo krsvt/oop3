@@ -1,4 +1,5 @@
 using Shops.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shops.Storage.Database;
 
@@ -6,22 +7,24 @@ public class PostgreSQLShopStorage : IShopStorage
 {
     private MyDbContext _context;
 
-    public PostgreSQLShopStorage (MyDbContext context) {
+    public PostgreSQLShopStorage(MyDbContext context)
+    {
         _context = context;
     }
 
-    Shop IShopStorage.AddShop(Product p)
+    async Task<List<Shop>> IShopStorage.GetAllShops()
     {
-        throw new NotImplementedException();
+        return await _context.Shops.ToListAsync();
     }
 
-    Shop IShopStorage.GetAllShops()
+    async Task<Shop> IShopStorage.GetShop(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Shops.Where(p => p.Id == id).SingleAsync();
     }
 
-    Shop IShopStorage.GetShop(int id)
+    async Task IShopStorage.AddShop(Shop s)
     {
-        throw new NotImplementedException();
+        await _context.Shops.AddAsync(s);
+        await _context.SaveChangesAsync();
     }
 }

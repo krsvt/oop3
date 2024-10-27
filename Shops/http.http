@@ -1,9 +1,13 @@
 ### получить все магазины
-GET http://localhost:8080/api/shop
+GET http://localhost:5249/api/shop
+
+### получить магазин по id
+
+GET http://localhost:5249/api/shop/1
 
 ### создать магазин
 
-POST http://localhost:8080/api/shop
+POST http://localhost:5249/api/shop
 accept: application/json
 content-type: application/json
 
@@ -36,13 +40,13 @@ content-type: application/json
 
 ### найти наименьшую цену продукта среди магазинов
 
-GET http://localhost:8080/api/product/1/lower-price
+GET http://localhost:5249/api/product/1/lower-price
 accept: application/json
 content-type: application/json
 
 ### добавить продукты в магазин
 
-POST http://localhost:8080/api/shop/1/add-products
+POST http://localhost:5249/api/shop/1/add-products
 accept: application/json
 content-type: application/json
 
@@ -60,7 +64,7 @@ content-type: application/json
 ]
 
 ### Понять, какие товары можно купить в магазине на некоторую сумму
-POST http://localhost:8080/api/shop/1/possible-products
+POST http://localhost:5249/api/shop/1/possible-products
 accept: application/json
 content-type: application/json
 
@@ -69,7 +73,7 @@ content-type: application/json
 }
 
 ### Купить партию товаров в магазине
-POST http://localhost:8080/api/shop/1/buy
+POST http://localhost:5249/api/shop/1/buy
 accept: application/json
 content-type: application/json
 
@@ -85,7 +89,7 @@ content-type: application/json
 ]
 
 ### Найти, в каком магазине партия товаров имеет меньшую цену
-POST http://localhost:8080/api/shop/1/lower-price
+POST http://localhost:5249/api/shop/1/lower-price
 accept: application/json
 content-type: application/json
 

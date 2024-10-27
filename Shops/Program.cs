@@ -13,6 +13,7 @@ StorageConfiguration.SetStorage(builder.Configuration,
         builder.Services);
 
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ShopService>();
 
 var app = builder.Build();
 
@@ -53,7 +54,37 @@ product.MapPost("/",
             await p.AddProductAsync(product);
             return Results.Created($"/api/product/{product.Id}", product);
         })
-.WithName("AddProduct")
-.WithOpenApi();
+.WithName("AddProduct");
 
+product.WithOpenApi();
+
+var shop = app.MapGroup("/api/shop");
+
+shop.MapGet("/",
+        async (IStorage st, ShopService s) =>
+        {
+            var shops = await s.GetAllShopsAsync();
+            return Results.Ok(shops);
+        })
+.WithName("GetAllShops");
+
+shop.MapGet("/{id}",
+        async (int id,
+            IStorage st, ShopService p) =>
+        {
+            var shop = await p.GetShopAsync(id);
+            return Results.Ok(shop);
+        })
+.WithName("GetShopById");
+
+
+shop.MapPost("/",
+        async (IStorage st, ShopService p, Shop shop) =>
+        {
+            await p.AddShopAsync(shop);
+            return Results.Created($"/api/shop/{shop.Id}", shop);
+        })
+.WithName("AddShop");
+
+shop.WithOpenApi();
 app.Run();

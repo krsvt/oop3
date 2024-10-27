@@ -20,14 +20,19 @@ content-type: application/json
 
 ### добавить продукт в базу
 
-POST http://localhost:8080/api/product
+POST http://localhost:5249/api/product
 accept: application/json
 content-type: application/json
 
 {
-  "title": "Watermelon",
-  "price": 100.5
+  "title": "Watermelon"
 }
+
+### найти продукт по id (не особо нужен по заданию)
+
+GET http://localhost:5249/api/product/1
+accept: application/json
+content-type: application/json
 
 ### найти наименьшую цену продукта среди магазинов
 

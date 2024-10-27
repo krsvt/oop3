@@ -17,4 +17,15 @@ public class ProductService
     return await Storage.ProductStorage.GetAllProducts();
   }
 
+  public async Task<Product> GetProductAsync(int id)
+  {
+    return await Storage.ProductStorage.GetProduct(id);
+  }
+
+
+  public async Task AddProductAsync(Product product)
+  {
+    await Storage.ProductStorage.AddProduct(product);
+  }
+
 }

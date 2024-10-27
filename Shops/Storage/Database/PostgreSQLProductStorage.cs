@@ -17,14 +17,14 @@ public class PostgreSQLProductStorage : IProductStorage
         return await _context.Products.ToListAsync();
     }
 
-    Task<Product> IProductStorage.AddProduct(Product p)
+    async Task IProductStorage.AddProduct(Product p)
     {
-        throw new NotImplementedException();
+        await _context.Products.AddAsync(p);
+        await _context.SaveChangesAsync();
     }
 
-
-    Task<Product> IProductStorage.GetProduct(int id)
+    async Task<Product> IProductStorage.GetProduct(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Products.Where(p => p.Id == id).SingleAsync();
     }
 }

@@ -28,4 +28,29 @@ public class ShopService
     await Storage.ShopStorage.AddShop(product);
   }
 
+  public async Task AddShopProductsAsync(int shopId, List<ShopProducts> products)
+  {
+    await Storage.ShopProductsStorage.AddShopProducts(shopId, products);
+  }
+
+  public async Task BuyProducts(int shopId, List<ShopProducts> products)
+  {
+    await Storage.ShopProductsStorage.BuyProducts(shopId, products);
+  }
+
+  public async Task<int> LowerProductPrice(int productId)
+  {
+    return await Storage.ShopProductsStorage.LowerProductPrice(productId);
+  }
+
+  public async Task<int> LowerShopProductsPrice(List<ShopProducts> products)
+  {
+    return await Storage.ShopProductsStorage.LowerShopProductsPrice(products);
+  }
+
+  // later
+  public async Task PossibleProducts(int shopId, decimal sum)
+  {
+    await Storage.ShopProductsStorage.PossibleProducts(shopId, sum);
+  }
 }

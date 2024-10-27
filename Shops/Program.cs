@@ -25,8 +25,39 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+var shop = app.MapGroup("/api/shop");
 var product = app.MapGroup("/api/product");
 
+
+// GET http://localhost:5249/api/shop
+shop.MapGet("/",
+        async (IStorage st, ShopService s) =>
+        {
+                var shops = await s.GetAllShopsAsync();
+                return Results.Ok(shops);
+        })
+.WithName("GetAllShops");
+
+// GET http://localhost:5249/api/shop/1
+shop.MapGet("/{id}",
+        async (int id,
+            IStorage st, ShopService s) =>
+        {
+                var shop = await s.GetShopAsync(id);
+                return Results.Ok(shop);
+        })
+.WithName("GetShopById");
+
+// POST http://localhost:5249/api/shop
+shop.MapPost("/",
+        async (IStorage st, ShopService s, Shop shop) =>
+        {
+                await s.AddShopAsync(shop);
+                return Results.Created($"/api/shop/{shop.Id}", shop);
+        })
+.WithName("AddShop");
+
+// GET http://localhost:5249/api/product
 product.MapGet("/",
         async (
             IStorage st, ProductService p) =>
@@ -37,17 +68,7 @@ product.MapGet("/",
 .WithName("GetProducts")
 .WithOpenApi();
 
-product.MapGet("/{id}",
-        async (int id,
-            IStorage st, ProductService p) =>
-        {
-                var pr = await p.GetProductAsync(id);
-                return Results.Ok(pr);
-        })
-.WithName("GetProductById")
-.WithOpenApi();
-
-
+// POST http://localhost:5249/api/product
 product.MapPost("/",
         async (IStorage st, ProductService p, Product product) =>
         {
@@ -56,44 +77,61 @@ product.MapPost("/",
         })
 .WithName("AddProduct");
 
-product.WithOpenApi();
-
-var shop = app.MapGroup("/api/shop");
-
-shop.MapGet("/",
-        async (IStorage st, ShopService s) =>
-        {
-                var shops = await s.GetAllShopsAsync();
-                return Results.Ok(shops);
-        })
-.WithName("GetAllShops");
-
-shop.MapGet("/{id}",
+// GET http://localhost:5249/api/product/1
+product.MapGet("/{id}",
         async (int id,
-            IStorage st, ShopService s) =>
+            IStorage st, ProductService p) =>
         {
-                var shop = await s.GetShopAsync(id);
+                var pr = await p.GetProductAsync(id);
+                return Results.Ok(pr);
+        })
+.WithName("GetProductById");
+
+// POST http://localhost:5249/api/shop/1/add-products
+shop.MapPost("/{id}/add-products",
+        async (int shopId, IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
+        {
+                await s.AddShopProductsAsync(shopId, shopProducts);
                 return Results.Ok(shop);
         })
-.WithName("GetShopById");
+.WithName("AddShopProducts");
 
-
-shop.MapPost("/",
-        async (IStorage st, ShopService s, Shop shop) =>
+// GET http://localhost:5249/api/product/1/lower-price
+product.MapPost("/{id}/lower-price",
+        async (int shopId, IStorage st, ShopService s) =>
         {
-                await s.AddShopAsync(shop);
-                return Results.Created($"/api/shop/{shop.Id}", shop);
+                await s.LowerProductPrice(100);
+                return Results.Ok();
         })
-.WithName("AddShop");
+.WithName("AddShopProducts");
 
-shop.MapPost("/{id}/add-products",
+// POST http://localhost:5249/api/shop/1/possible-products
+shop.MapPost("/{id}/possible-products",
+        async (int shopId, IStorage st, ShopService s) =>
+        {
+                await s.PossibleProducts(shopId, 100);
+                return Results.Ok(shop);
+        })
+.WithName("AddPossibleProducts");
+
+// POST http://localhost:5249/api/shop/1/buy
+shop.MapPost("/{id}/buy",
+        async (int shopId, IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
+        {
+                await s.BuyProducts(shopId, shopProducts);
+                return Results.Ok();
+        })
+.WithName("BuyShopProducts");
+
+// POST http://localhost:5249/api/product/lower-price-many
+product.MapPost("lower-price-many",
         async (IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
         {
-                await s.AddShopProductsAsync(shopProducts);
-                return Results.Ok(shop);
+                await s.LowerShopProductsPrice(shopProducts);
+                return Results.Ok();
         })
-.WithName("AddShop");
+.WithName("AddShopProducts");
 
-
+product.WithOpenApi();
 shop.WithOpenApi();
 app.Run();

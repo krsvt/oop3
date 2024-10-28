@@ -11,7 +11,7 @@ public class FilesShopProductsStorage : IShopProductsStorage
     throw new NotImplementedException();
   }
 
-  Task<List<ShopProducts>> IShopProductsStorage.BuyProducts(int shopId, List<ShopProducts> ShopProducts)
+  Task<decimal> IShopProductsStorage.BuyProducts(int shopId, List<BuyRequestDTO> ShopProducts)
   {
     throw new NotImplementedException();
   }
@@ -20,7 +20,6 @@ public class FilesShopProductsStorage : IShopProductsStorage
   {
     throw new NotImplementedException();
   }
-
 
   Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerProductPrice(int productId)
   {

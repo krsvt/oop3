@@ -47,20 +47,20 @@ content-type: application/json
 
 [
   {
-    "productId": 3,
+    "productId": 1,
     "amount": 3,
     "price": 100
   },
   {
-    "productId": 4,
+    "productId": 2,
     "amount": 3,
-    "price": 100
+    "price": 200
   }
 ]
 
 ### найти наименьшую цену продукта среди магазинов
 
-GET http://localhost:5249/api/product/3/lower-price
+GET http://localhost:5249/api/product/1/lower-price
 accept: application/json
 content-type: application/json
 

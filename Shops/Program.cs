@@ -107,28 +107,17 @@ shop.MapPost("/{shopId}/add-products",
 product.MapGet("/{productId}/lower-price",
         async (int productId, IStorage st, ProductService productService) =>
         {
-                Console.WriteLine("here " + productId);
                 var lowerPriceShop = await productService.LowerProductPrice(productId);
-                Console.WriteLine("low " + lowerPriceShop);
                 return Results.Ok(lowerPriceShop);
         })
 .WithName("LowerPrice");
 
-// POST http://localhost:5249/api/shop/1/possible-products
-shop.MapPost("/{id}/possible-products",
-        async (int shopId, IStorage st, ShopService s) =>
-        {
-                await s.PossibleProducts(shopId, 100);
-                return Results.Ok();
-        })
-.WithName("AddPossibleProducts");
-
 // POST http://localhost:5249/api/shop/1/buy
-shop.MapPost("/{id}/buy",
-        async (int shopId, IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
+shop.MapPost("/{shopId}/buy",
+        async (int shopId, IStorage st, ShopService s, List<BuyRequestDTO> shopProducts) =>
         {
-                await s.BuyProducts(shopId, shopProducts);
-                return Results.Ok();
+                var total = await s.BuyProducts(shopId, shopProducts);
+                return Results.Ok("total price = " + total);
         })
 .WithName("BuyShopProducts");
 
@@ -140,6 +129,15 @@ product.MapPost("lower-price-many",
                 return Results.Ok();
         })
 .WithName("LowerPriceMany");
+
+// POST http://localhost:5249/api/shop/1/possible-products
+shop.MapPost("/{id}/possible-products",
+        async (int shopId, IStorage st, ShopService s) =>
+        {
+                await s.PossibleProducts(shopId, 100);
+                return Results.Ok();
+        })
+.WithName("PossibleProducts");
 
 product.WithOpenApi();
 shop.WithOpenApi();

@@ -37,9 +37,9 @@ public class ShopService
     return await Storage.ShopProductsStorage.AddShopProducts(shopId, productsEntity);
   }
 
-  public async Task BuyProducts(int shopId, List<ShopProducts> products)
+  public async Task<decimal> BuyProducts(int shopId, List<BuyRequestDTO> products)
   {
-    await Storage.ShopProductsStorage.BuyProducts(shopId, products);
+    return await Storage.ShopProductsStorage.BuyProducts(shopId, products);
   }
 
   public async Task<LowerProductPriceResponseDTO> LowerProductPrice(int productId)

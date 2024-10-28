@@ -70,9 +70,27 @@ public class PostgreSQLShopProductsStorage : IShopProductsStorage
         };
     }
 
-    Task<List<ShopProducts>> IShopProductsStorage.BuyProducts(int shopId, List<ShopProducts> ShopProducts)
+    async Task<decimal> IShopProductsStorage.BuyProducts(int shopId, List<BuyRequestDTO> ShopProducts)
     {
-        throw new NotImplementedException();
+        decimal total = 0;
+        foreach (var product in ShopProducts)
+        {
+            var p = await _context.ShopProducts
+                .Where(s => s.ShopId == shopId && s.ProductId == product.Id).FirstOrDefaultAsync();
+
+            if (p == null)
+                throw new Exception($"No product ${product.Id} in shop {shopId}");
+
+            if (product.Amount > p.Amount)
+                throw new Exception($"Not enough products ${product.Id} in shop {shopId}: {p.Amount}");
+
+            if (p.Price < 0)
+                throw new Exception($"Can't buy product {product.Id}");
+            p.Amount -= product.Amount;
+            await _context.SaveChangesAsync();
+            total += product.Amount * p.Price;
+        }
+        return total;
     }
 
 

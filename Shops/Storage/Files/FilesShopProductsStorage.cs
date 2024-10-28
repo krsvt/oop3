@@ -1,3 +1,4 @@
+using Shops.DTO;
 using Shops.Entities;
 
 namespace Shops.Storage.Files;
@@ -20,7 +21,8 @@ public class FilesShopProductsStorage : IShopProductsStorage
     throw new NotImplementedException();
   }
 
-  Task<int> IShopProductsStorage.LowerProductPrice(int productId)
+
+  Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerProductPrice(int productId)
   {
     throw new NotImplementedException();
   }

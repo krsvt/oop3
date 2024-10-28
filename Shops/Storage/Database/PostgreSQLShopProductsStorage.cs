@@ -1,5 +1,6 @@
 using Shops.Entities;
 using Microsoft.EntityFrameworkCore;
+using Shops.DTO;
 
 namespace Shops.Storage.Database;
 
@@ -46,15 +47,34 @@ public class PostgreSQLShopProductsStorage : IShopProductsStorage
         return newProducts.Concat(updatedProducts).ToList();
     }
 
+    async Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerProductPrice(int productId)
+    {
+        var lowestPriceProduct = await _context.ShopProducts
+            .Where(sp => sp.ProductId == productId)
+            .OrderBy(sp => sp.Price)
+            .FirstOrDefaultAsync();
+
+        if (lowestPriceProduct == null)
+        {
+            return new LowerProductPriceResponseDTO
+            {
+                ShopId = 0,
+                Price = 0
+            };
+        }
+
+        return new LowerProductPriceResponseDTO
+        {
+            ShopId = lowestPriceProduct.ShopId,
+            Price = lowestPriceProduct.Price
+        };
+    }
+
     Task<List<ShopProducts>> IShopProductsStorage.BuyProducts(int shopId, List<ShopProducts> ShopProducts)
     {
         throw new NotImplementedException();
     }
 
-    Task<int> IShopProductsStorage.LowerProductPrice(int productId)
-    {
-        throw new NotImplementedException();
-    }
 
     Task<int> IShopProductsStorage.LowerShopProductsPrice(List<ShopProducts> ShopProducts)
     {

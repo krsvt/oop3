@@ -104,11 +104,13 @@ shop.MapPost("/{shopId}/add-products",
 .WithName("AddShopProducts");
 
 // GET http://localhost:5249/api/product/1/lower-price
-product.MapPost("/{id}/lower-price",
-        async (int shopId, IStorage st, ShopService s) =>
+product.MapGet("/{productId}/lower-price",
+        async (int productId, IStorage st, ProductService productService) =>
         {
-                await s.LowerProductPrice(100);
-                return Results.Ok();
+                Console.WriteLine("here " + productId);
+                var lowerPriceShop = await productService.LowerProductPrice(productId);
+                Console.WriteLine("low " + lowerPriceShop);
+                return Results.Ok(lowerPriceShop);
         })
 .WithName("LowerPrice");
 

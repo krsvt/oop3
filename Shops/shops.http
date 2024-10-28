@@ -60,18 +60,10 @@ content-type: application/json
 
 ### найти наименьшую цену продукта среди магазинов
 
-GET http://localhost:5249/api/product/1/lower-price
+GET http://localhost:5249/api/product/3/lower-price
 accept: application/json
 content-type: application/json
 
-### Понять, какие товары можно купить в магазине на некоторую сумму
-POST http://localhost:5249/api/shop/1/possible-products
-accept: application/json
-content-type: application/json
-
-{
-  "money": 100.5
-}
 
 ### Купить партию товаров в магазине
 POST http://localhost:5249/api/shop/1/buy
@@ -104,3 +96,12 @@ content-type: application/json
     "amount": 1
   }
 ]
+
+### Понять, какие товары можно купить в магазине на некоторую сумму
+POST http://localhost:5249/api/shop/1/possible-products
+accept: application/json
+content-type: application/json
+
+{
+  "money": 100.5
+}

@@ -27,5 +27,4 @@ public class PostgreSQLProductStorage : IProductStorage
         await _context.Products.AddAsync(p);
         await _context.SaveChangesAsync();
     }
-
 }

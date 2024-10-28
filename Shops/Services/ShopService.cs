@@ -42,7 +42,7 @@ public class ShopService
     await Storage.ShopProductsStorage.BuyProducts(shopId, products);
   }
 
-  public async Task<int> LowerProductPrice(int productId)
+  public async Task<LowerProductPriceResponseDTO> LowerProductPrice(int productId)
   {
     return await Storage.ShopProductsStorage.LowerProductPrice(productId);
   }

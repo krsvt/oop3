@@ -1,5 +1,6 @@
 using Shops.Entities;
 using Shops.Storage;
+using Shops.DTO;
 
 namespace Shops.Services;
 
@@ -26,6 +27,11 @@ public class ProductService
   public async Task AddProductAsync(Product product)
   {
     await Storage.ProductStorage.AddProduct(product);
+  }
+
+  public async Task<LowerProductPriceResponseDTO> LowerProductPrice(int productId)
+  {
+    return await Storage.ShopProductsStorage.LowerProductPrice(productId);
   }
 
 }

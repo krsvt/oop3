@@ -1,5 +1,6 @@
 using Shops.Entities;
 using Shops.Storage;
+using Shops.DTO;
 
 namespace Shops.Services;
 
@@ -28,9 +29,12 @@ public class ShopService
     await Storage.ShopStorage.AddShop(product);
   }
 
-  public async Task AddShopProductsAsync(int shopId, List<ShopProducts> products)
+  public async Task<List<ShopProducts>>
+    AddShopProductsAsync(int shopId, List<AddProductsRequestDTO> products)
   {
-    await Storage.ShopProductsStorage.AddShopProducts(shopId, products);
+    var productsEntity = products.Select(p => new ShopProducts
+        { ShopId = shopId, ProductId = p.ProductId, Amount = p.Amount, Price = p.Price}).ToList();
+    return await Storage.ShopProductsStorage.AddShopProducts(shopId, productsEntity);
   }
 
   public async Task BuyProducts(int shopId, List<ShopProducts> products)

@@ -1,10 +1,6 @@
 ### получить все магазины
 GET http://localhost:5249/api/shop
 
-### получить магазин по id (не особо нужен по заданию)
-
-GET http://localhost:5249/api/shop/1
-
 ### создать магазин
 
 POST http://localhost:5249/api/shop
@@ -15,6 +11,11 @@ content-type: application/json
   "title": "Pyatiorochka",
   "address": "Saint-Petersburg, st. Parfenovskaya, 1"
 }
+
+### получить магазин по id (не особо нужен по заданию)
+
+GET http://localhost:5249/api/shop/1
+
 
 ### получить все продукты
 
@@ -46,14 +47,14 @@ content-type: application/json
 
 [
   {
-    "id": 1,
-    "amount": 2,
+    "productId": 3,
+    "amount": 3,
     "price": 100
   },
   {
-    "id": 2,
+    "productId": 4,
     "amount": 3,
-    "price": 200
+    "price": 100
   }
 ]
 

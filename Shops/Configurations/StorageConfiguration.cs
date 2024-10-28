@@ -15,9 +15,10 @@ public class StorageConfiguration
     {
       var dbConfig = configuration["ConnectionStrings:DefaultConnection"];
       services.AddDbContext<MyDbContext>
-        (options =>
-         options.UseNpgsql(dbConfig));
-      // I hope it can be treated as service
+        (options => options
+         .UseNpgsql(dbConfig)
+         .EnableSensitiveDataLogging());
+      // I hope it can be treated as a service
       services.AddScoped<IStorage, PostgreSQLStorage>();
     }
     else if (dbaType == "file")

@@ -4,12 +4,18 @@ namespace Shops.Storage.Files;
 
 public class FilesShopProductsStorage : IShopProductsStorage
 {
-  Task IShopProductsStorage.AddShopProducts(int shopId, List<ShopProducts> ShopProducts)
+
+  Task<List<ShopProducts>> IShopProductsStorage.AddShopProducts(int shopId, List<ShopProducts> products)
   {
     throw new NotImplementedException();
   }
 
   Task<List<ShopProducts>> IShopProductsStorage.BuyProducts(int shopId, List<ShopProducts> ShopProducts)
+  {
+    throw new NotImplementedException();
+  }
+
+  Task<List<ShopProducts>> IShopProductsStorage.GetProducts(int shopId)
   {
     throw new NotImplementedException();
   }

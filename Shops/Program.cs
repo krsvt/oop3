@@ -1,13 +1,21 @@
 using Shops.Configuration;
 using Shops.Entities;
 using Shops.Services;
+using Shops.DTO;
 using Shops.Storage;
+using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
 
 StorageConfiguration.SetStorage(builder.Configuration,
         builder.Services);
@@ -79,8 +87,7 @@ product.MapPost("/",
 
 // GET http://localhost:5249/api/product/1
 product.MapGet("/{id}",
-        async (int id,
-            IStorage st, ProductService p) =>
+        async (int id, IStorage st, ProductService p) =>
         {
                 var pr = await p.GetProductAsync(id);
                 return Results.Ok(pr);
@@ -88,11 +95,11 @@ product.MapGet("/{id}",
 .WithName("GetProductById");
 
 // POST http://localhost:5249/api/shop/1/add-products
-shop.MapPost("/{id}/add-products",
-        async (int shopId, IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
+shop.MapPost("/{shopId}/add-products",
+        async (int shopId, IStorage st, ShopService s, List<AddProductsRequestDTO> shopProducts) =>
         {
-                await s.AddShopProductsAsync(shopId, shopProducts);
-                return Results.Ok(shop);
+                var added = await s.AddShopProductsAsync(shopId, shopProducts);
+                return Results.Ok(added);
         })
 .WithName("AddShopProducts");
 
@@ -103,14 +110,14 @@ product.MapPost("/{id}/lower-price",
                 await s.LowerProductPrice(100);
                 return Results.Ok();
         })
-.WithName("AddShopProducts");
+.WithName("LowerPrice");
 
 // POST http://localhost:5249/api/shop/1/possible-products
 shop.MapPost("/{id}/possible-products",
         async (int shopId, IStorage st, ShopService s) =>
         {
                 await s.PossibleProducts(shopId, 100);
-                return Results.Ok(shop);
+                return Results.Ok();
         })
 .WithName("AddPossibleProducts");
 
@@ -130,8 +137,9 @@ product.MapPost("lower-price-many",
                 await s.LowerShopProductsPrice(shopProducts);
                 return Results.Ok();
         })
-.WithName("AddShopProducts");
+.WithName("LowerPriceMany");
 
 product.WithOpenApi();
 shop.WithOpenApi();
 app.Run();
+

@@ -16,17 +16,6 @@ public class MyDbContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    // modelBuilder.Entity<Song>()
-    //   .HasMany(s => s.SongsCollections)
-    //   .WithMany(sc => sc.Songs)
-    //   .UsingEntity(j => j.ToTable("song_songs_collection"));
-    //
-    // // Определяем ArtistSearchResultDto как безключевую сущность
-    // modelBuilder.Entity<ArtistSearchResultDto>()
-    //   .HasNoKey();
-    //
-    // modelBuilder.Entity<AlbumAndCollectionSearchResultDto>()
-    //   .HasNoKey();
-
+    modelBuilder.Entity<ShopProducts>().HasKey(table => new {table.ShopId, table.ProductId});
   }
 }

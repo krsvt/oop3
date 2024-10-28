@@ -94,9 +94,57 @@ public class PostgreSQLShopProductsStorage : IShopProductsStorage
     }
 
 
-    Task<int> IShopProductsStorage.LowerShopProductsPrice(List<ShopProducts> ShopProducts)
+    private bool ContainsAllProductsAndAmountIsFine(List<ShopProducts> shopProducts,
+            List<BuyRequestDTO> requestedProducts)
     {
-        throw new NotImplementedException();
+        var availableProducts = shopProducts.ToDictionary(sp => sp.ProductId, sp => sp.Amount);
+
+        foreach (var product in requestedProducts)
+        {
+            if (!availableProducts.TryGetValue(product.Id, out var availableAmount))
+            {
+                return false;
+            }
+
+            if (availableAmount < product.Amount)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    async Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerShopProductsPrice(List<BuyRequestDTO> shopProducts)
+    {
+        var productIds = shopProducts.Select(sp => sp.Id).ToList();
+        var requestedAmounts = shopProducts.ToDictionary(sp => sp.Id, sp => sp.Amount);
+
+        var grouppedShops = await _context.ShopProducts
+            .Where(sp => productIds.Contains(sp.ProductId))
+            .GroupBy(sp => sp.ShopId)
+            .ToListAsync();
+
+        var temp = grouppedShops
+            .Where(g =>
+                    ContainsAllProductsAndAmountIsFine(g.ToList(), shopProducts)
+                  )
+            .Select(g => new
+            {
+                ShopId = g.Key,
+                Price = g.Min(sp => sp.Price)
+            }).ToList();
+
+        var response = temp
+            .OrderBy(gs => gs.Price)
+            .FirstOrDefault();
+
+        if (response == null)
+        {
+            throw new Exception("No suitable shop found");
+        }
+
+        return new LowerProductPriceResponseDTO { Price = response.Price, ShopId = response.ShopId };
     }
 
     Task<List<ShopProducts>> IShopProductsStorage.PossibleProducts(int shopId, decimal sum)

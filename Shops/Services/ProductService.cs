@@ -34,4 +34,9 @@ public class ProductService
     return await Storage.ShopProductsStorage.LowerProductPrice(productId);
   }
 
+  public async Task<LowerProductPriceResponseDTO> LowerShopProductsPrice(List<BuyRequestDTO> products)
+  {
+    return await Storage.ShopProductsStorage.LowerShopProductsPrice(products);
+  }
+
 }

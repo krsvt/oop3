@@ -13,8 +13,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
 StorageConfiguration.SetStorage(builder.Configuration,
@@ -123,15 +123,15 @@ shop.MapPost("/{shopId}/buy",
 
 // POST http://localhost:5249/api/product/lower-price-many
 product.MapPost("lower-price-many",
-        async (IStorage st, ShopService s, List<ShopProducts> shopProducts) =>
+        async (IStorage st, ProductService productService, List<BuyRequestDTO> shopProducts) =>
         {
-                await s.LowerShopProductsPrice(shopProducts);
-                return Results.Ok();
+                var totalResp = await productService.LowerShopProductsPrice(shopProducts);
+                return Results.Ok(totalResp);
         })
 .WithName("LowerPriceMany");
 
 // POST http://localhost:5249/api/shop/1/possible-products
-shop.MapPost("/{id}/possible-products",
+shop.MapPost("/{shopId}/possible-products",
         async (int shopId, IStorage st, ShopService s) =>
         {
                 await s.PossibleProducts(shopId, 100);

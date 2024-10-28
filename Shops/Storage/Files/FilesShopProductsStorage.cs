@@ -26,7 +26,7 @@ public class FilesShopProductsStorage : IShopProductsStorage
     throw new NotImplementedException();
   }
 
-  Task<int> IShopProductsStorage.LowerShopProductsPrice(List<ShopProducts> products)
+  Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerShopProductsPrice(List<BuyRequestDTO> products)
   {
     throw new NotImplementedException();
   }

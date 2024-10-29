@@ -147,8 +147,34 @@ public class PostgreSQLShopProductsStorage : IShopProductsStorage
         return new LowerProductPriceResponseDTO { Price = response.Price, ShopId = response.ShopId };
     }
 
-    Task<List<ShopProducts>> IShopProductsStorage.PossibleProducts(int shopId, decimal sum)
+    async Task<PossibleProductsResponseDTO> IShopProductsStorage.PossibleProducts(int shopId, PossibleProductsRequestDTO request)
     {
-        throw new NotImplementedException();
+        var all = await _context.ShopProducts
+            .Where(s => s.Amount > 0)
+            .OrderBy(s => s.Price)
+            .ToListAsync();
+
+        var max = request.Money;
+        Console.WriteLine("max " + max);
+        var current = max;
+        var psIds = new Dictionary<int, int>();
+        foreach (var p in all)
+        {
+            ShopProducts s = new ShopProducts { Price = p.Price, Amount = p.Amount, ProductId = p.ProductId, ShopId = shopId };
+            Console.WriteLine("here 2");
+            while (s.Amount > 0 && s.Price <= current)
+            {
+                current -= s.Price;
+                s.Amount--;
+                if (!psIds.ContainsKey(s.ProductId))
+                {
+                    psIds[s.ProductId] = 0;
+                }
+                psIds[s.ProductId]++;
+                Console.WriteLine("here ");
+            }
+        }
+
+        return new PossibleProductsResponseDTO { Products = psIds };
     }
 }

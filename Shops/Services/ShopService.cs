@@ -33,7 +33,7 @@ public class ShopService
     AddShopProductsAsync(int shopId, List<AddProductsRequestDTO> products)
   {
     var productsEntity = products.Select(p => new ShopProducts
-        { ShopId = shopId, ProductId = p.ProductId, Amount = p.Amount, Price = p.Price}).ToList();
+    { ShopId = shopId, ProductId = p.ProductId, Amount = p.Amount, Price = p.Price }).ToList();
     return await Storage.ShopProductsStorage.AddShopProducts(shopId, productsEntity);
   }
 
@@ -42,9 +42,10 @@ public class ShopService
     return await Storage.ShopProductsStorage.BuyProducts(shopId, products);
   }
 
-  // later
-  public async Task PossibleProducts(int shopId, decimal sum)
+  public async Task<PossibleProductsResponseDTO>
+    PossibleProducts(int shopId, PossibleProductsRequestDTO possibleProductsRequest)
   {
-    await Storage.ShopProductsStorage.PossibleProducts(shopId, sum);
+    return await Storage.ShopProductsStorage
+      .PossibleProducts(shopId, possibleProductsRequest);
   }
 }

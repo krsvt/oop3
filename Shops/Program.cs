@@ -132,10 +132,11 @@ product.MapPost("lower-price-many",
 
 // POST http://localhost:5249/api/shop/1/possible-products
 shop.MapPost("/{shopId}/possible-products",
-        async (int shopId, IStorage st, ShopService s) =>
+        async (int shopId, IStorage st, ShopService s, PossibleProductsRequestDTO possibleProductsRequest) =>
         {
-                await s.PossibleProducts(shopId, 100);
-                return Results.Ok();
+                Console.WriteLine("pos " + possibleProductsRequest);
+                var products = await s.PossibleProducts(shopId, possibleProductsRequest);
+                return Results.Ok(products);
         })
 .WithName("PossibleProducts");
 

@@ -103,5 +103,5 @@ accept: application/json
 content-type: application/json
 
 {
-  "money": 100.5
+  "money": 1000
 }

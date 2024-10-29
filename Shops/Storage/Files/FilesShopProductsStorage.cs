@@ -31,7 +31,7 @@ public class FilesShopProductsStorage : IShopProductsStorage
     throw new NotImplementedException();
   }
 
-  Task<List<ShopProducts>> IShopProductsStorage.PossibleProducts(int shopId, decimal sum)
+  Task<PossibleProductsResponseDTO> IShopProductsStorage.PossibleProducts(int shopId, PossibleProductsRequestDTO possibleProductsRequest)
   {
     throw new NotImplementedException();
   }

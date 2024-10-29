@@ -10,6 +10,5 @@ public interface IShopProductsStorage
   public Task<List<ShopProducts>> GetProducts(int shopId);
   public Task<LowerProductPriceResponseDTO> LowerProductPrice(int productId);
   public Task<LowerProductPriceResponseDTO> LowerShopProductsPrice(List<BuyRequestDTO> products);
-
-  public Task<List<ShopProducts>> PossibleProducts(int shopId, decimal sum);
+  public Task<PossibleProductsResponseDTO> PossibleProducts(int shopId, PossibleProductsRequestDTO possibleProductsRequest);
 }

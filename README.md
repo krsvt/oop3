@@ -15,6 +15,12 @@ http://localhost:5249/swagger/index.html
 ```
 docker compose up
 ```
+
+### Migrations
+```
+dotnet ef database update -v
+```
+
 ### appsettings
 ```
 {

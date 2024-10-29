@@ -11,7 +11,11 @@ http://localhost:5249/swagger/index.html
 
 
 ## PostgreSQL 
-appsettings:
+### Up
+```
+docker compose up
+```
+### appsettings
 ```
 {
   "Logging": {
@@ -27,11 +31,12 @@ appsettings:
   }
 }
 ```
+### Scheme
 ![image](https://github.com/user-attachments/assets/b2bdf35d-b3fb-4fa3-95b8-541341aa75e2)
 (+ Shop.Address)
 
 ## Files
-appsettings:
+### appsettings
 ```
 {
   "Logging": {
@@ -44,6 +49,7 @@ appsettings:
   "DBA": "file",
 }
 ```
+### Files
 Hard-coded files are:
 - product.json
 - shop.json

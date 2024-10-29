@@ -1,21 +1,48 @@
 using Shops.Entities;
+using System.Text.Json;
 
 namespace Shops.Storage.Files;
 
 public class FilesShopStorage : IShopStorage
 {
-    Task IShopStorage.AddShop(Shop s)
+    private readonly string _filePath;
+
+    public FilesShopStorage(string filePath)
     {
-        throw new NotImplementedException();
+        _filePath = filePath;
     }
 
-    Task<List<Shop>> IShopStorage.GetAllShops()
+    public async Task AddShop(Shop shop)
     {
-        throw new NotImplementedException();
+        var shops = await GetAllShops();
+        shop.Id = (shops.Count > 0) ? shops.Max(s => s.Id) + 1 : 1;
+        shops.Add(shop);
+        await SaveShopsToFileAsync(shops);
     }
 
-    Task<Shop> IShopStorage.GetShop(int id)
+    public async Task<List<Shop>> GetAllShops()
     {
-        throw new NotImplementedException();
+        if (!File.Exists(_filePath))
+            return new List<Shop>();
+
+        var json = await File.ReadAllTextAsync(_filePath);
+        return JsonSerializer.Deserialize<List<Shop>>(json) ?? new List<Shop>();
+    }
+
+    public async Task<Shop> GetShop(int id)
+    {
+        var shops = await GetAllShops();
+        var shop = shops.FirstOrDefault(s => s.Id == id);
+
+        if (shop == null)
+            throw new KeyNotFoundException($"Shop with ID {id} not found.");
+
+        return shop;
+    }
+
+    private async Task SaveShopsToFileAsync(List<Shop> shops)
+    {
+        var json = JsonSerializer.Serialize(shops);
+        await File.WriteAllTextAsync(_filePath, json);
     }
 }

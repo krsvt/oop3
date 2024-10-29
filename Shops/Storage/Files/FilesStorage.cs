@@ -10,9 +10,9 @@ public class FilesStorage : IStorage
 
     public FilesStorage()
     {
-        ProductStorage = new FilesProductStorage();
-        ShopStorage = new FilesShopStorage();
-        ShopProductsStorage = new FilesShopProductsStorage();
+        ProductStorage = new FilesProductStorage("product.json");
+        ShopStorage = new FilesShopStorage("shop.json");
+        ShopProductsStorage = new FilesShopProductsStorage("shopproducts.json");
     }
 
 

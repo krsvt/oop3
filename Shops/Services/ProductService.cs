@@ -23,7 +23,6 @@ public class ProductService
     return await Storage.ProductStorage.GetProduct(id);
   }
 
-
   public async Task AddProductAsync(Product product)
   {
     await Storage.ProductStorage.AddProduct(product);
@@ -31,12 +30,75 @@ public class ProductService
 
   public async Task<LowerProductPriceResponseDTO> LowerProductPrice(int productId)
   {
-    return await Storage.ShopProductsStorage.LowerProductPrice(productId);
+    var products = await Storage.ShopProductsStorage
+      .LoadProductsByProductIdsAsync(new List<int> { productId });
+
+    var lowestPriceProduct = products
+      .Where(p => p.ProductId == productId)
+      .OrderBy(p => p.Price)
+      .FirstOrDefault();
+
+    if (lowestPriceProduct == null)
+    {
+      return new LowerProductPriceResponseDTO
+      {
+        ShopId = 0,
+        Price = 0
+      };
+    }
+
+    return new LowerProductPriceResponseDTO
+    {
+      ShopId = lowestPriceProduct.ShopId,
+      Price = lowestPriceProduct.Price
+    };
   }
 
-  public async Task<LowerProductPriceResponseDTO> LowerShopProductsPrice(List<BuyRequestDTO> products)
+    private bool ContainsAllProductsAndAmountIsFine(List<ShopProducts> shopProducts,
+            List<BuyRequestDTO> requestedProducts)
+    {
+        var availableProducts = shopProducts.ToDictionary(sp => sp.ProductId, sp => sp.Amount);
+
+        foreach (var product in requestedProducts)
+        {
+            if (!availableProducts.TryGetValue(product.Id, out var availableAmount))
+            {
+                return false;
+            }
+
+            if (availableAmount < product.Amount)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+  public async Task<LowerProductPriceResponseDTO> LowerShopProductsPrice(List<BuyRequestDTO> shopProducts)
   {
-    return await Storage.ShopProductsStorage.LowerShopProductsPrice(products);
+    var productIds = shopProducts.Select(sp => sp.Id).ToList();
+    var products = await Storage.ShopProductsStorage.LoadProductsByProductIdsAsync(productIds);
+
+    var availableShops = products
+        .GroupBy(p => p.ShopId)
+        .Where(g => ContainsAllProductsAndAmountIsFine(g.ToList(), shopProducts))
+        .Select(g => new
+        {
+          ShopId = g.Key,
+          Price = g.Min(sp => sp.Price)
+        })
+        .OrderBy(g => g.Price)
+        .FirstOrDefault();
+
+    if (availableShops == null)
+      throw new Exception("No suitable shop found");
+
+    return new LowerProductPriceResponseDTO
+    {
+      ShopId = availableShops.ShopId,
+      Price = availableShops.Price
+    };
   }
 
 }

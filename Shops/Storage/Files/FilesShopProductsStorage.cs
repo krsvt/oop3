@@ -1,38 +1,69 @@
-using Shops.DTO;
 using Shops.Entities;
+using System.Text.Json;
 
 namespace Shops.Storage.Files;
 
 public class FilesShopProductsStorage : IShopProductsStorage
 {
+  private readonly string _filePath;
 
-  Task<List<ShopProducts>> IShopProductsStorage.AddShopProducts(int shopId, List<ShopProducts> products)
+  public FilesShopProductsStorage(string filePath)
   {
-    throw new NotImplementedException();
+    _filePath = filePath;
   }
 
-  Task<decimal> IShopProductsStorage.BuyProducts(int shopId, List<BuyRequestDTO> ShopProducts)
+  public async Task<List<ShopProducts>> LoadProductsAsync(int shopId)
   {
-    throw new NotImplementedException();
+    if (!File.Exists(_filePath))
+      return new List<ShopProducts>();
+
+    var json = await File.ReadAllTextAsync(_filePath);
+    var allProducts = JsonSerializer.Deserialize<List<ShopProducts>>(json)
+      ?? new List<ShopProducts>();
+
+    return allProducts.Where(p => p.ShopId == shopId).ToList();
   }
 
-  Task<List<ShopProducts>> IShopProductsStorage.GetProducts(int shopId)
+
+  public async Task SaveProductsAsync(List<ShopProducts> products)
   {
-    throw new NotImplementedException();
+    var existingProducts = new List<ShopProducts>();
+    if (File.Exists(_filePath))
+    {
+      var existingJson = await File.ReadAllTextAsync(_filePath);
+      existingProducts = JsonSerializer.Deserialize<List<ShopProducts>>(existingJson)
+        ?? new List<ShopProducts>();
+    }
+
+    foreach (var product in products)
+    {
+      var existingProduct = existingProducts.FirstOrDefault(p => p.ShopId == product.ShopId && p.ProductId == product.ProductId);
+      if (existingProduct != null)
+      {
+        existingProduct.Amount = product.Amount;
+        existingProduct.Price = product.Price;
+      }
+      else
+      {
+        existingProducts.Add(product);
+      }
+    }
+
+    var json = JsonSerializer.Serialize(existingProducts,
+        new JsonSerializerOptions { WriteIndented = true });
+    await File.WriteAllTextAsync(_filePath, json);
   }
 
-  Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerProductPrice(int productId)
+  public async Task<List<ShopProducts>> LoadProductsByProductIdsAsync(List<int> productIds)
   {
-    throw new NotImplementedException();
-  }
+    if (!File.Exists(_filePath))
+      return new List<ShopProducts>();
 
-  Task<LowerProductPriceResponseDTO> IShopProductsStorage.LowerShopProductsPrice(List<BuyRequestDTO> products)
-  {
-    throw new NotImplementedException();
-  }
+    var json = await File.ReadAllTextAsync(_filePath);
+    var allProducts = JsonSerializer.Deserialize<List<ShopProducts>>(json) ?? new List<ShopProducts>();
 
-  Task<PossibleProductsResponseDTO> IShopProductsStorage.PossibleProducts(int shopId, PossibleProductsRequestDTO possibleProductsRequest)
-  {
-    throw new NotImplementedException();
+    return allProducts
+        .Where(sp => productIds.Contains(sp.ProductId))
+        .ToList();
   }
 }

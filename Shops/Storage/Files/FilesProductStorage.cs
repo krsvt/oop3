@@ -1,22 +1,48 @@
 using Shops.Entities;
+using System.Text.Json;
 
 namespace Shops.Storage.Files;
 
 public class FilesProductStorage : IProductStorage
 {
-    Task<List<Product>> IProductStorage.GetAllProducts()
+    private readonly string _filePath;
+
+    public FilesProductStorage(string filePath)
     {
-        throw new NotImplementedException();
+        _filePath = filePath;
     }
 
-    Task<Product> IProductStorage.GetProduct(int id)
+    public async Task AddProduct(Product product)
     {
-        throw new NotImplementedException();
+        var products = await GetAllProducts();
+        product.Id = (products.Count > 0) ? products.Max(p => p.Id) + 1 : 1;
+        products.Add(product);
+        await SaveProductsToFileAsync(products);
     }
 
-    Task IProductStorage.AddProduct(Product p)
+    public async Task<List<Product>> GetAllProducts()
     {
-        throw new NotImplementedException();
+        if (!File.Exists(_filePath))
+            return new List<Product>();
+
+        var json = await File.ReadAllTextAsync(_filePath);
+        return JsonSerializer.Deserialize<List<Product>>(json) ?? new List<Product>();
     }
 
+    public async Task<Product> GetProduct(int id)
+    {
+        var products = await GetAllProducts();
+        var product = products.FirstOrDefault(p => p.Id == id);
+
+        if (product == null)
+            throw new KeyNotFoundException($"Product with ID {id} not found.");
+
+        return product;
+    }
+
+    private async Task SaveProductsToFileAsync(List<Product> products)
+    {
+        var json = JsonSerializer.Serialize(products);
+        await File.WriteAllTextAsync(_filePath, json);
+    }
 }

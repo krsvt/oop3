@@ -20,10 +20,12 @@ public class StorageConfiguration
          .EnableSensitiveDataLogging());
       // I hope it can be treated as a service
       services.AddScoped<IStorage, PostgreSQLStorage>();
+      Console.WriteLine("Runnning with PostgresStorage");
     }
     else if (dbaType == "file")
     {
       services.AddScoped<IStorage, FilesStorage>();
+      Console.WriteLine("Runnning with files storage");
     }
     else
       throw new Exception("NO DBA IN CONFIGURATION");

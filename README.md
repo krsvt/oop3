@@ -5,8 +5,13 @@ http://localhost:5249/swagger/index.html
 ![image](https://github.com/user-attachments/assets/6d14f76d-7c13-4dab-80e2-b1b83838730e)
 
 
+## Run
+```
+dotnet run --project API
+```
+
 ## HTTP testings
-`Shops/shops.http`
+`API/API.http`
 ![image](https://github.com/user-attachments/assets/b3c88342-28d6-406d-af81-ec00ff1c1772)
 
 

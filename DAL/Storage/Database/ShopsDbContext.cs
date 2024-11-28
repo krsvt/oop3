@@ -16,6 +16,6 @@ public class ShopsDbContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<ShopProducts>().HasKey(table => new {table.ShopId, table.ProductId});
+    modelBuilder.ApplyConfiguration(new ShopProductsConfiguration());
   }
 }

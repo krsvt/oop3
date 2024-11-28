@@ -1,8 +1,9 @@
+using DAL.Entities;
 namespace DAL.Storage;
 
 public interface IStorage
 {
-  public IProductRepository ProductRepository { get; set; }
-  public IShopRepository ShopRepository { get; set; }
-  public IShopProductsRepository ShopProductsRepository { get; set; }
+  public IRepository<Product> ProductRepository { get; set; }
+  public IRepository<Shop> ShopRepository { get; set; }
+  public IRepository<ShopProducts> ShopProductsRepository { get; set; }
 }

@@ -15,23 +15,23 @@ public class ProductService
 
   public async Task<List<Product>> GetAllProductsAsync()
   {
-    return await Storage.ProductRepository.GetAllProducts();
+    return await Storage.ProductRepository.GetAllAsync();
   }
 
   public async Task<Product> GetProductAsync(int id)
   {
-    return await Storage.ProductRepository.GetProduct(id);
+    return await Storage.ProductRepository.GetAsync(id);
   }
 
   public async Task AddProductAsync(Product product)
   {
-    await Storage.ProductRepository.AddProduct(product);
+    await Storage.ProductRepository.AddAsync(product);
   }
 
   public async Task<LowerProductPriceResponseDTO> LowerProductPrice(int productId)
   {
     var products = await Storage.ShopProductsRepository
-      .LoadProductsByProductIdsAsync(new List<int> { productId });
+      .GetAsync(sp => sp.ProductId == productId);
 
     var lowestPriceProduct = products
       .Where(p => p.ProductId == productId)
@@ -78,7 +78,7 @@ public class ProductService
   public async Task<LowerProductPriceResponseDTO> LowerShopProductsPrice(List<BuyRequestDTO> shopProducts)
   {
     var productIds = shopProducts.Select(sp => sp.Id).ToList();
-    var products = await Storage.ShopProductsRepository.LoadProductsByProductIdsAsync(productIds);
+    var products = await Storage.ShopProductsRepository.GetAsync(sp => productIds.Contains(sp.ProductId));
 
     var availableShops = products
         .GroupBy(p => p.ShopId)

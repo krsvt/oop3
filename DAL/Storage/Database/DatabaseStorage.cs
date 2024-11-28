@@ -1,18 +1,18 @@
-using DAL.Storage.Database.Repository;
+using DAL.Entities;
 namespace DAL.Storage.Database;
 
 public class DatabaseStorage : IStorage
 {
 
-    public IProductRepository ProductRepository { get; set; }
-    public IShopRepository ShopRepository { get; set; }
-    public IShopProductsRepository ShopProductsRepository { get; set; }
+    public IRepository<Product> ProductRepository { get; set; }
+    public IRepository<Shop> ShopRepository { get; set; }
+    public IRepository<ShopProducts> ShopProductsRepository { get; set; }
 
     public DatabaseStorage(ShopsDbContext context)
     {
-        ProductRepository = new DatabaseProductRepository(context);
-        ShopRepository = new DatabaseShopRepository(context);
-        ShopProductsRepository = new DatabaseShopProductsRepository(context);
+        ProductRepository = new DatabaseRepository<Product>(context);
+        ShopRepository = new DatabaseRepository<Shop>(context);
+        ShopProductsRepository = new DatabaseRepository<ShopProducts>(context);
     }
 
     public override string? ToString()

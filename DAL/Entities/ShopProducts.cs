@@ -1,6 +1,6 @@
 namespace DAL.Entities;
 
-public class ShopProducts
+public class ShopProducts : BaseEntity
 {
   public required int ShopId { get; set; }
   public required int ProductId { get; set; }

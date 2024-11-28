@@ -15,8 +15,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
-StorageConfiguration.SetStorage(builder.Configuration,
-        builder.Services);
+builder.Services.AddStorage(builder.Configuration);
 
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ShopService>();

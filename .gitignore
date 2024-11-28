@@ -1,6 +1,2 @@
-BLL/bin
-BLL/obj
-DAL/obj
-DAL/bin
-API/bin
-API/obj
+**/bin/
+**/obj/

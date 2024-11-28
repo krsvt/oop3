@@ -7,7 +7,8 @@ http://localhost:5249/swagger/index.html
 
 ## Run
 ```
-dotnet run --project API
+dotnet run --project API --launch-profile "FileDevMode"
+dotnet run --project API --launch-profile "DbDevMode"
 ```
 
 ## HTTP testings

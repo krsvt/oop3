@@ -15,6 +15,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
+
+builder.Configuration
+       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+       .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
+                       optional: true, reloadOnChange: true)
+       .AddEnvironmentVariables();
+
 builder.Services.AddStorage(builder.Configuration);
 
 builder.Services.AddScoped<ProductService>();

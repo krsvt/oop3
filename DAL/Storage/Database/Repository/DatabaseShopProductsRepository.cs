@@ -1,29 +1,29 @@
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.Storage.Database;
+namespace DAL.Storage.Database.Repository;
 
-public class PostgreSQLShopProductsStorage : IShopProductsStorage
+public class DatabaseShopProductsRepository : IShopProductsRepository
 {
     private ShopsDbContext _context;
 
-    public PostgreSQLShopProductsStorage(ShopsDbContext context)
+    public DatabaseShopProductsRepository(ShopsDbContext context)
     {
         _context = context;
     }
 
-    async Task<List<ShopProducts>> IShopProductsStorage.LoadProductsAsync(int shopId)
+    async Task<List<ShopProducts>> IShopProductsRepository.LoadProductsAsync(int shopId)
     {
         return await _context.ShopProducts.Where(p => p.ShopId == shopId).ToListAsync();
     }
 
-    async Task IShopProductsStorage.SaveProductsAsync(List<ShopProducts> products)
+    async Task IShopProductsRepository.SaveProductsAsync(List<ShopProducts> products)
     {
         _context.ShopProducts.UpdateRange(products);
         await _context.SaveChangesAsync();
     }
 
-    async Task<List<ShopProducts>> IShopProductsStorage.LoadProductsByProductIdsAsync(List<int> productIds)
+    async Task<List<ShopProducts>> IShopProductsRepository.LoadProductsByProductIdsAsync(List<int> productIds)
     {
         return await _context.ShopProducts
             .Where(sp => productIds.Contains(sp.ProductId))

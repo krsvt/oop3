@@ -4,15 +4,15 @@ namespace DAL.Storage.Files;
 public class FilesStorage : IStorage
 {
 
-    public IProductStorage ProductStorage { get; set; }
-    public IShopStorage ShopStorage { get; set; }
-    public IShopProductsStorage ShopProductsStorage { get; set; }
+    public IProductRepository ProductRepository { get; set; }
+    public IShopRepository ShopRepository { get; set; }
+    public IShopProductsRepository ShopProductsRepository { get; set; }
 
     public FilesStorage()
     {
-        ProductStorage = new FilesProductStorage("product.json");
-        ShopStorage = new FilesShopStorage("shop.json");
-        ShopProductsStorage = new FilesShopProductsStorage("shopproducts.json");
+        ProductRepository = new FilesProductRepository("product.json");
+        ShopRepository = new FilesShopRepository("shop.json");
+        ShopProductsRepository = new FilesShopProductsRepository("shopproducts.json");
     }
 
 

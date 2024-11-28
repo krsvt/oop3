@@ -2,7 +2,7 @@ using DAL.Entities;
 
 namespace DAL.Storage;
 
-public interface IShopProductsStorage
+public interface IShopProductsRepository
 {
   public Task SaveProductsAsync(List<ShopProducts> products);
   public Task<List<ShopProducts>> LoadProductsAsync(int shopId);

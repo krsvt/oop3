@@ -3,11 +3,11 @@ using System.Text.Json;
 
 namespace DAL.Storage.Files;
 
-public class FilesShopStorage : IShopStorage
+public class FilesShopRepository : IShopRepository
 {
     private readonly string _filePath;
 
-    public FilesShopStorage(string filePath)
+    public FilesShopRepository(string filePath)
     {
         _filePath = filePath;
     }

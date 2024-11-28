@@ -30,7 +30,7 @@ public static class StorageExtensions
     services.AddDbContext<ShopsDbContext>(options =>
         options.UseNpgsql(dbConfig)
                .EnableSensitiveDataLogging());
-    services.AddScoped<IStorage, PostgreSQLStorage>();
+    services.AddScoped<IStorage, DatabaseStorage>();
     Console.WriteLine("Running with Database storage");
   }
 

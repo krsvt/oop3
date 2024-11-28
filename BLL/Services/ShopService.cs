@@ -15,18 +15,18 @@ public class ShopService
 
   public async Task<List<Shop>> GetAllShopsAsync()
   {
-    return await Storage.ShopStorage.GetAllShops();
+    return await Storage.ShopRepository.GetAllShops();
   }
 
   public async Task<Shop> GetShopAsync(int id)
   {
-    return await Storage.ShopStorage.GetShop(id);
+    return await Storage.ShopRepository.GetShop(id);
   }
 
 
   public async Task AddShopAsync(Shop product)
   {
-    await Storage.ShopStorage.AddShop(product);
+    await Storage.ShopRepository.AddShop(product);
   }
 
   public async Task<List<ShopProducts>>
@@ -40,7 +40,7 @@ public class ShopService
       Price = p.Price
     }).ToList();
 
-    var existingProducts = await Storage.ShopProductsStorage.LoadProductsAsync(shopId);
+    var existingProducts = await Storage.ShopProductsRepository.LoadProductsAsync(shopId);
 
     var newProducts = new List<ShopProducts>();
     var updatedProducts = new List<ShopProducts>();
@@ -68,14 +68,14 @@ public class ShopService
         .Concat(updatedProducts)
         .ToList();
 
-    await Storage.ShopProductsStorage.SaveProductsAsync(allProducts);
+    await Storage.ShopProductsRepository.SaveProductsAsync(allProducts);
 
     return newProducts.Concat(updatedProducts).ToList();
   }
 
   public async Task<decimal> BuyProducts(int shopId, List<BuyRequestDTO> shopProducts)
   {
-    var products = await Storage.ShopProductsStorage.LoadProductsAsync(shopId);
+    var products = await Storage.ShopProductsRepository.LoadProductsAsync(shopId);
     decimal total = 0;
 
     foreach (var product in shopProducts)
@@ -96,14 +96,14 @@ public class ShopService
       total += product.Amount * existingProduct.Price;
     }
 
-    await Storage.ShopProductsStorage.SaveProductsAsync(products);
+    await Storage.ShopProductsRepository.SaveProductsAsync(products);
     return total;
   }
 
   public async Task<PossibleProductsResponseDTO>
     PossibleProducts(int shopId, PossibleProductsRequestDTO possibleProductsRequest)
   {
-    var products = await Storage.ShopProductsStorage.LoadProductsAsync(shopId);
+    var products = await Storage.ShopProductsRepository.LoadProductsAsync(shopId);
     decimal maxBudget = possibleProductsRequest.Money;
     decimal currentBudget = maxBudget;
 

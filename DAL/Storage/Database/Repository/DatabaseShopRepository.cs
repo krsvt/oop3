@@ -1,28 +1,28 @@
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.Storage.Database;
+namespace DAL.Storage.Database.Repository;
 
-public class PostgreSQLShopStorage : IShopStorage
+public class DatabaseShopRepository : IShopRepository
 {
     private ShopsDbContext _context;
 
-    public PostgreSQLShopStorage(ShopsDbContext context)
+    public DatabaseShopRepository(ShopsDbContext context)
     {
         _context = context;
     }
 
-    async Task<List<Shop>> IShopStorage.GetAllShops()
+    async Task<List<Shop>> IShopRepository.GetAllShops()
     {
         return await _context.Shops.ToListAsync();
     }
 
-    async Task<Shop> IShopStorage.GetShop(int id)
+    async Task<Shop> IShopRepository.GetShop(int id)
     {
         return await _context.Shops.Where(p => p.Id == id).SingleAsync();
     }
 
-    async Task IShopStorage.AddShop(Shop s)
+    async Task IShopRepository.AddShop(Shop s)
     {
         await _context.Shops.AddAsync(s);
         await _context.SaveChangesAsync();

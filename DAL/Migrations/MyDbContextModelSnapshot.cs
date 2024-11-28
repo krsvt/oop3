@@ -9,8 +9,8 @@ using DAL.Storage.Database;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ShopsDbContext))]
+    partial class ShopsDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

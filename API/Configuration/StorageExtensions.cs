@@ -27,7 +27,7 @@ public static class StorageExtensions
   private static void ConfigureDatabaseStorage(IServiceCollection services, IConfiguration configuration)
   {
     var dbConfig = configuration.GetConnectionString("DefaultConnection");
-    services.AddDbContext<MyDbContext>(options =>
+    services.AddDbContext<ShopsDbContext>(options =>
         options.UseNpgsql(dbConfig)
                .EnableSensitiveDataLogging());
     services.AddScoped<IStorage, PostgreSQLStorage>();

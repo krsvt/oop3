@@ -8,7 +8,7 @@ public class PostgreSQLStorage : IStorage
     public IShopStorage ShopStorage { get; set; }
     public IShopProductsStorage ShopProductsStorage { get; set; }
 
-    public PostgreSQLStorage(MyDbContext context)
+    public PostgreSQLStorage(ShopsDbContext context)
     {
         ProductStorage = new PostgreSQLProductStorage(context);
         ShopStorage = new PostgreSQLShopStorage(context);

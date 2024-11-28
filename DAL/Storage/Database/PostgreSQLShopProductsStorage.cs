@@ -5,9 +5,9 @@ namespace DAL.Storage.Database;
 
 public class PostgreSQLShopProductsStorage : IShopProductsStorage
 {
-    private MyDbContext _context;
+    private ShopsDbContext _context;
 
-    public PostgreSQLShopProductsStorage(MyDbContext context)
+    public PostgreSQLShopProductsStorage(ShopsDbContext context)
     {
         _context = context;
     }

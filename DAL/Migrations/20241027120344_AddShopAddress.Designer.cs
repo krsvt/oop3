@@ -10,7 +10,7 @@ using DAL.Storage.Database;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(ShopsDbContext))]
     [Migration("20241027120344_AddShopAddress")]
     partial class AddShopAddress
     {

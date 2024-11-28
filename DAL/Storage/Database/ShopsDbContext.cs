@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Storage.Database;
 
-public class MyDbContext : DbContext
+public class ShopsDbContext : DbContext
 {
-  public MyDbContext(DbContextOptions<MyDbContext> options)
+  public ShopsDbContext(DbContextOptions<ShopsDbContext> options)
       : base(options)
   {
   }
